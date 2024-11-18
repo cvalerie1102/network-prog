@@ -7,3 +7,6 @@ This project implements a client-server UDP application where the client sends 1
 1. Start the server:
    ```bash
    python server.py
+
+ 2. python client.py
+
