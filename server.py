@@ -3,14 +3,14 @@ import sys
 import random
 
 def main():
-    # Check for command-line arguments
+    
     if len(sys.argv) != 2:
         print("Usage: python server.py <port>")
         sys.exit(1)
 
     port = int(sys.argv[1])
 
-    # Create a UDP socket
+    
     server_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     server_socket.bind(("", port))  # Bind to localhost and specified port
     print(f"[server] : ready to accept data on port {port}...")
@@ -29,6 +29,7 @@ def main():
                 response = b'PONG'
                 server_socket.sendto(response, client_address)
                 print("[server] : PONG sent")
+                
         except KeyboardInterrupt:
             print("\n[server] : shutting down...")
             break
