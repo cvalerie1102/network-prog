@@ -6,12 +6,12 @@ This project implements a client-server UDP application where the client sends 1
 
 1. Start the server:
    make sure it's in the same directory as the file
-   python server.py 8008
+   then run python server.py 8008
 
 
 2. python client.py
    make sure it's in the same directory as the file
-   python client.py local host 8008
+   then run python client.py local host 8008
 
  
    
