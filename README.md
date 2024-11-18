@@ -5,8 +5,14 @@ This project implements a client-server UDP application where the client sends 1
 ## How to Run
 
 1. Start the server:
-   ```bash
-   python server.py
+   make sure it's in the same directory as the file
+   python server.py 8008
 
- 2. python client.py
+
+2. python client.py
+   make sure it's in the same directory as the file
+   python client.py local host 8008
+
+ 
+   
 
