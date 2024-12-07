@@ -1,40 +1,41 @@
 import socket
-import sys
-import random
+import requests
+
+BASE_URL = "http://127.0.0.1:8080"  # Ensure this matches your Flask server's address and port
+
+def test_register():
+    # Test registering a new user
+    data = {"username": "testuser", "email": "testuser@example.com"}
+    response = requests.post(f"{BASE_URL}/register", json=data)
+    if response.status_code == 201:
+        print("Register Response:", response.json())
+        return response.json()["password"]
+    else:
+        print("Registration failed:", response.json())
+        return None
+
+def test_auth(username, password):
+    # Test authenticating a user
+    data = {"username": username, "password": password}
+    response = requests.post(f"{BASE_URL}/auth", json=data)
+    if response.status_code == 200:
+        print("Auth Response:", response.json())
+    else:
+        print("Auth Failed:", response.json())
+
+def test_rate_limit(username, password):
+    # Test the rate limiter on /auth
+    for i in range(12):  # Attempt 12 requests to trigger the rate limit
+        print(f"Request {i + 1}:", end=" ")
+        test_auth(username, password)
 
 def main():
-    
-    if len(sys.argv) != 2:
-        print("Usage: python server.py <port>")
-        sys.exit(1)
-
-    port = int(sys.argv[1])
-
-    
-    server_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-    server_socket.bind(("", port))  # Bind to localhost and specified port
-    print(f"[server] : ready to accept data on port {port}...")
-
-    while True:
-        try:
-            # Receive message from client
-            data, client_address = server_socket.recvfrom(1024)
-            message = data.decode("utf-8")
-            print(f"[client] : {message}")
-
-            # Randomly decide whether to drop the packet or send a response
-            if random.random() < 0.3:  # 30% chance to drop the packet
-                print("[server] : packet dropped")
-            else:
-                response = b'PONG'
-                server_socket.sendto(response, client_address)
-                print("[server] : PONG sent")
-                
-        except KeyboardInterrupt:
-            print("\n[server] : shutting down...")
-            break
-        except Exception as e:
-            print(f"[server] : error occurred - {e}")
+    password = test_register()
+    if password:
+        test_auth("testuser", password)
+        print("\nTesting rate limit:")
+        test_rate_limit("testuser", password)
 
 if __name__ == "__main__":
     main()
+    
